@@ -1,0 +1,59 @@
+name: Firefox Extension Publisher
+
+on:
+    release:
+        types: [published]
+    workflow_dispatch:
+
+permissions:
+    contents: write
+
+jobs:
+    build-and-publish:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+
+            - name: Install web-ext
+              run: npm install -g web-ext
+
+            - name: Build Extension
+              run: web-ext build --artifacts-dir ./web-ext-artifacts
+
+            - name: Prepare XPI
+              id: prepare
+              run: |
+                  FILE_PATH=$(find ./web-ext-artifacts -name "*.zip")
+                  XPI_PATH=${FILE_PATH%.zip}.xpi
+                  mv "$FILE_PATH" "$XPI_PATH"
+                  echo "xpi_path=$XPI_PATH" >> $GITHUB_ENV
+
+            - name: Upload Artifact to Workflow Run
+              if: github.event_name == 'workflow_dispatch'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: smartersmartschool-extension
+                  path: ${{ env.xpi_path }}
+
+            - name: Submit to Firefox Add-ons
+              if: github.event_name == 'release'
+              run: |
+                  web-ext sign --source-dir . \
+                               --api-key ${{ secrets.WEB_EXT_API_KEY }} \
+                               --api-secret ${{ secrets.WEB_EXT_API_SECRET }} \
+                               --channel listed
+
+            - name: Upload XPI to GitHub Release
+              if: github.event_name == 'release'
+              uses: softprops/action-gh-release@v2
+              with:
+                  files: ${{ env.xpi_path }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
