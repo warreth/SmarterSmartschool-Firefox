@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Smarter Smartschool",
   "short_name": "SSS",
-  "version": "5.8",
+  "version": "5.9",
   "description": "Makes smartschool smart.",
   "permissions": [
     "storage",

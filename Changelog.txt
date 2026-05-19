@@ -1,12 +1,18 @@
-5.8 - Firefox
-- Ported over to firefox:
+5.9 
+- Make sidebar injection more robust for Smartschool changes (code adapted from original forked repo)
+- Fix failing score text not showing in red
+- Fix table overflowing from modal
+
+5.8 
+- Firefox
+- Ported over to Firefox:
     - Custom themes
-    - storage
+    - Storage
     - Points tabel
 - Add reminder to refresh the page
 - Fix colors not restoring
 - Use local storage instead of sync
-- Remove fixes for smartschool++ because it doesnt exist for firefox
+- Remove fixes for Smartschool++ because it doesn't exist for firefox
 - Change dark mode so it still shows the table
 - Fix the results table not showing up
 
