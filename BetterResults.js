@@ -129,7 +129,7 @@ function makeGrid() {
           const name = result["name"];
     
 
-          row.append($("<td/>").addClass("c-" + color + "-combo--100 details-cell").attr({ content: "Onderwerp: " + name }).text(desc));
+          row.append($("<td/>").addClass("c-" + color + "-combo--300 details-cell").attr({ content: "Onderwerp: " + name }).text(desc));
 
         let match = desc.match(/^([\d\,\.]+)\/([\d\,\.]+)$/);
         if (match) {
